@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Header({ title, arrowType }) {
+export default function Header({ title, arrowType, navigation }) {
   return (
     <View style={styles.header}>
       <View>
@@ -26,7 +26,9 @@ export default function Header({ title, arrowType }) {
           name={arrowType}
           color={colors.whiteAccent}
           size={20}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
       </View>
       <View style={{ marginLeft: 8 }}>

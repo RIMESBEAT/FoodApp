@@ -10,10 +10,10 @@ import {
 import BgImage from "../../../assets/homeBg.png";
 import { colors, parameters } from "../../global/Styles";
 import * as Animatable from "react-native-animatable";
-import { Button, color, Icon } from "@rneui/base";
+import { Button, Icon } from "@rneui/base";
 import Header from "../../components/Header";
 
-const LogInScreen = () => {
+const LogInScreen = ({ navigation }) => {
   const [inputText, setInputText] = useState(false);
   const [inputText02, setInputText02] = useState(false);
 
@@ -27,9 +27,13 @@ const LogInScreen = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <View style={styles.overlay}>
+        <View style={parameters.overlay}>
           <View>
-            <Header title="My Account" arrowType="arrow-left" />
+            <Header
+              title="My Account"
+              arrowType="arrow-left"
+              navigation={navigation}
+            />
           </View>
           <View style={{ alignItems: "center", marginTop: 50 }}>
             <Text style={styles.homeText}>YOU YOU</Text>
@@ -107,7 +111,14 @@ const LogInScreen = () => {
                 paddingRight: 20,
               }}
             >
-              <Text style={styles.forgetPass}>Forgot Password?</Text>
+              <Text
+                style={styles.forgetPass}
+                onPress={() => {
+                  navigation.navigate("ForgetPassword");
+                }}
+              >
+                Forgot Password?
+              </Text>
             </View>
             <View style={styles.btn}>
               <Button
@@ -133,21 +144,12 @@ const LogInScreen = () => {
 
 export default LogInScreen;
 
-const styles = {
+const styles = StyleSheet.create({
   bgImage: {
     height: "100%",
     width: "100%",
   },
-  overlay: {
-    flex: 1,
-    position: "absolute",
-    left: 0,
-    top: 0,
-    opacity: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    width: "100%",
-    height: "100%",
-  },
+
   homeText: {
     fontSize: 40,
     fontWeight: "bold",
@@ -176,7 +178,7 @@ const styles = {
   forgetPass: {
     fontSize: 17,
     color: colors.whiteAccent,
-    marginTop: 40,
+    marginTop: 15,
   },
   createAct: {
     fontSize: 17,
@@ -191,4 +193,4 @@ const styles = {
   content: {
     marginTop: "40%",
   },
-};
+});

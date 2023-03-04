@@ -33,6 +33,16 @@ export const parameters = {
     justifyContent: "center",
     marginTop: -3,
   },
+  overlay: {
+    flex: 1,
+    position: "absolute",
+    left: 0,
+    top: 0,
+    opacity: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    width: "100%",
+    height: "100%",
+  },
 };
 
 export const titleText = {
