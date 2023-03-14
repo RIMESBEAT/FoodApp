@@ -1,5 +1,10 @@
 export const colors = {
   greyAccent: "#8D95A6",
+  greyAccent100: "#e8eaed",
+  greyAccent200: "#d1d5db",
+  greyAccent300: "#bbbfca",
+  greyAccent400: "#a4aab8",
+  greyAccent500: "#8d95a6",
   redAccent: "#D91604",
   whiteAccent: "#F2F2F2",
   greenAccent: "#61A61C",
@@ -43,8 +48,14 @@ export const parameters = {
     width: "100%",
     height: "100%",
   },
+  avatarStyle: {
+    borderWidth: 2,
+    borderColor: colors.whiteAccent,
+  },
 };
 
 export const titleText = {
   title: 20,
 };
+
+

@@ -125,6 +125,9 @@ const LogInScreen = ({ navigation }) => {
                 title="Login"
                 buttonStyle={parameters.styledButton}
                 titleStyle={parameters.buttonTitle}
+                onPress={() => {
+                  navigation.navigate("Drawer");
+                }}
               />
             </View>
             <View
