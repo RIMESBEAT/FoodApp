@@ -1,16 +1,39 @@
+import { useNavigation } from "@react-navigation/native";
 import { Icon } from "@rneui/base";
 import React, { useRef, useState } from "react";
-import { Modal } from "react-native";
+import { FlatList, Modal } from "react-native";
 import { TextInput } from "react-native";
 import { StyleSheet } from "react-native";
+import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import { Text, View } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { filterData } from "../global/Data";
+import { colors } from "../global/Styles";
+import  {filter } from "lodash";
 
 const SearchComponent = () => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([...filterData]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [isFocussed, setIsfocussed] = useState(true);
-  const inputTextRef = useRef();
+  const [isTextFoccused, setIsTextFocussed] = useState(true);
+  const inputTextRef = useRef(0);
+
+  const contains = ({ name }, query) => {
+    if (name.toLowerCase().includes(query.toLowerCase())) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleSearch = text => {
+    const searchData = filter(filterData, userSearchInput => {
+    return contains(userSearchInput, text);
+    })
+    setData([...searchData])
+}
+
   return (
     <View>
       <TouchableWithoutFeedback
@@ -30,8 +53,77 @@ const SearchComponent = () => {
       </TouchableWithoutFeedback>
       <Modal animationType="fade" transparent={false} visible={modalVisible}>
         <View>
-          <View>
-            
+          <View style={styles.inputStyle}>
+            <View style={{ flexDirection: "row" }}>
+              <Animatable.View
+                animation={isTextFoccused ? "fadeInLeft" : "fadeInRight"}
+                duration={400}
+              >
+                <Icon
+                  type="meterial"
+                  name={isTextFoccused ? "arrow-back" : "search"}
+                  size={35}
+                  onPress={() => {
+                    if (isTextFoccused) {
+                      setIsTextFocussed(false);
+                      setModalVisible(false);
+                    }
+                  }}
+                />
+              </Animatable.View>
+
+              <TextInput
+                placeholder="Search Here"
+                style={{ fontSize: 16, width: "80%" }}
+                ref={inputTextRef}
+                autoFocus={false}
+                onBlur={() => {
+                  setIsTextFocussed(false);
+                }}
+                onFocus={() => {
+                  setIsTextFocussed(true);
+                }}
+                onChangeText={handleSearch}
+              />
+            </View>
+
+            <Animatable.View
+              animation={isTextFoccused ? "fadeInRight" : ""}
+              duration={400}
+            >
+              <Icon
+                type="material"
+                name={isTextFoccused ? "cancel" : null}
+                size={30}
+                onPress={() => {
+                  inputTextRef.current.clear();
+                }}
+              />
+            </Animatable.View>
+          </View>
+          <View style={{ width: "100%", height: "100%" }}>
+            <FlatList
+              data={data}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    Keyboard.dismiss;
+                    navigation.navigate("RestaurantScreen", {
+                      item: item.name,
+                    });
+                    setModalVisible(false);
+                    setIsTextFocussed(true);
+                  }}
+                >
+                  <View style={{ marginTop: 20, marginLeft: 20 }}>
+                    <Text style={{ fontSize: 15, color: colors.greyAccent }}>
+                      {item.name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.id}
+            />
           </View>
         </View>
       </Modal>
